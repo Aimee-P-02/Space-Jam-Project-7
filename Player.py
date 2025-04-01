@@ -443,13 +443,13 @@ class SpaceShip(SphereCollideObject):
             
              
             if shooter in LargeMissile.AltIntervals:
-                print("alt intervals called")
+                #print("alt intervals called")
                 self.AltDestroyObject(victim, intoPosition)
                 LargeMissile.AltIntervals[shooter].finish()  
             
             else:
                 self.DestroyObject(victim, intoPosition)
-                print("missile.intervals called")
+                #print("missile.intervals called")
                 Missile.Intervals[shooter].finish()
 
 
