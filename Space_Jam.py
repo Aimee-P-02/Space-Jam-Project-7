@@ -5,11 +5,7 @@ from panda3d.core import CollisionTraverser, CollisionHandlerPusher
 import Player as playerClass
 
 
-#To do:
 
-# multiple missile bay (one extra beside the large missiles), basically dual firing. Works like regular missile bay
-# dual missiles working, f key fires from left and k key fires from right now
-# both can be pressed at the same time
 
 
                                             
@@ -42,7 +38,7 @@ class MyApp(ShowBase):
         
         
         
-
+        # changed the way x y and z drones are placed to avoid the glitch with drones
         for j in range(fullCycle):
             spaceJamClasses.Drone.dronecount += 1
             
@@ -58,8 +54,7 @@ class MyApp(ShowBase):
         
 
         
-        # does not go in loop
-        # function def positions drones in its own loop
+        
         
         
 

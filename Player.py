@@ -35,8 +35,8 @@ class SpaceShip(SphereCollideObject):
         self.reloadTime = .25
         self.BoostCooldownTime = .85 # boost cooldown longer than bullet reload
         self.missileDistance = 4000 # until the missile explodes
-        self.missileBay = 1 # only one missile in the missile bay to be launched
-        self.dualmissileBay = 1 # should only fire if two keys are pressed
+        self.missileBay = 2 # only one missile in the missile bay to be launched
+        self.dualmissileBay = 2 # should only fire if two keys are pressed
         self.altMissileBay = 1
         self.numBoosts = 1 # number of boosts availiable like with missiles
 
@@ -322,12 +322,12 @@ class SpaceShip(SphereCollideObject):
 
     def Reload(self, task):
         if task.time > self.reloadTime:
-            self.missileBay += 1
-            self.dualmissileBay += 1
+            self.missileBay += 2
+            self.dualmissileBay += 2
 
-            if self.missileBay > 1 and self.dualmissileBay > 1:
-                self.missileBay = 1
-                self.dualmissileBay = 1
+            if self.missileBay > 2 and self.dualmissileBay > 2:
+                self.missileBay = 2
+                self.dualmissileBay = 2
         
 
             print('reload complete')
@@ -401,23 +401,23 @@ class SpaceShip(SphereCollideObject):
     def HandleInto(self, entry):
 
         fromNode = entry.getFromNodePath().getName()
-        print("fromNode: " + fromNode)
+        #print("fromNode: " + fromNode)
 
         intoNode = entry.getIntoNodePath().getName()
-        print("intoNode: " + intoNode)
+        #print("intoNode: " + intoNode)
 
         intoPosition = Vec3(entry.getSurfacePoint(self.render))
         tempVar = fromNode.split('_')
 
-        print("tempVar: " + str(tempVar))
+        #print("tempVar: " + str(tempVar))
         shooter = tempVar[0]
-        print("Shooter: " + str(shooter))
+        #print("Shooter: " + str(shooter))
         tempVar = intoNode.split('-')
-        print("tempVar1: " + str(tempVar))
+        #print("tempVar1: " + str(tempVar))
         tempVar = intoNode.split('_')
-        print('tempVar2: ' + str(tempVar))
+        #print('tempVar2: ' + str(tempVar))
         victim = tempVar[0]
-        print("Victim: " + str(victim))
+        #print("Victim: " + str(victim))
 
         strippedString = re.sub(r'[0-9]', '', victim)
         #gameObjects = ["Station", "Drone","Planet"]
@@ -425,24 +425,30 @@ class SpaceShip(SphereCollideObject):
 
         if (strippedString == "Station"):
        
-            print(victim, ' hit at ', intoPosition)
+            #print(victim, ' hit at ', intoPosition)
             self.checkStationHP(victim)
             #self.DestroyObject(victim, intoPosition)
+
+            if shooter in LargeMissile.AltIntervals:
+                LargeMissile.AltIntervals[shooter].finish() 
+            
+            else: 
+                Missile.Intervals[shooter].finish()
+
         
             
         elif ( "Drone" in strippedString or "Planet" in strippedString):
-            print(victim, ' hit at ', intoPosition)
+            #print(victim, ' hit at ', intoPosition)
+            self.DestroyObject(victim, intoPosition)
             
             
              
             if shooter in LargeMissile.AltIntervals:
-                print("Alt destroy called!")
                 self.AltDestroyObject(victim, intoPosition)
                 LargeMissile.AltIntervals[shooter].finish()  
             
             else:
-                print("destroy object called!")
-                self.DestroyObject(victim, intoPosition)
+                print("missile.intervals called")
                 Missile.Intervals[shooter].finish()
 
 
@@ -461,15 +467,14 @@ class SpaceShip(SphereCollideObject):
         self.Explode()
 
     
-    def checkStationHP(self, victim: NodePath):
-        if SpaceStation.stationHP >= 0:
+    def checkStationHP(self, victim):
+        if SpaceStation.stationHP > 1:
             SpaceStation.stationHP -= 1
             print("stationHP reduced " + str(SpaceStation.stationHP))
             self.shrinkSize = 5
             stationID = self.render.find(victim)
-            print("station scale: " + str(stationID.getScale()))
             stationID.setScale(stationID.getScale() - self.shrinkSize)
-            print("station scale: " + str(stationID.getScale()))
+           
                 
 
 
