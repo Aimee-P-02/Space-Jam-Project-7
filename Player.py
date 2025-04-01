@@ -35,8 +35,8 @@ class SpaceShip(SphereCollideObject):
         self.reloadTime = .25
         self.BoostCooldownTime = .85 # boost cooldown longer than bullet reload
         self.missileDistance = 4000 # until the missile explodes
-        self.missileBay = 2 # only one missile in the missile bay to be launched
-        self.dualmissileBay = 2 # should only fire if two keys are pressed
+        self.missileBay = 1 # only one missile in the missile bay to be launched
+        self.dualmissileBay = 1 # should only fire if two keys are pressed
         self.altMissileBay = 1
         self.numBoosts = 1 # number of boosts availiable like with missiles
 
@@ -437,17 +437,18 @@ class SpaceShip(SphereCollideObject):
 
         
             
-        elif ( "Drone" in strippedString or "Planet" in strippedString):
+        elif (strippedString == "Drone" or strippedString == "Planet" ):
             #print(victim, ' hit at ', intoPosition)
-            self.DestroyObject(victim, intoPosition)
             
             
              
             if shooter in LargeMissile.AltIntervals:
+                print("alt intervals called")
                 self.AltDestroyObject(victim, intoPosition)
                 LargeMissile.AltIntervals[shooter].finish()  
             
             else:
+                self.DestroyObject(victim, intoPosition)
                 print("missile.intervals called")
                 Missile.Intervals[shooter].finish()
 

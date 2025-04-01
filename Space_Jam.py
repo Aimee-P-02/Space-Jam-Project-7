@@ -38,7 +38,7 @@ class MyApp(ShowBase):
         
         
         
-        # changed the way x y and z drones are placed to avoid the glitch with drones
+        # changed the way x y and z drones are placed to avoid the glitch with
         for j in range(fullCycle):
             spaceJamClasses.Drone.dronecount += 1
             
@@ -46,11 +46,12 @@ class MyApp(ShowBase):
 
             self.DrawCloudDefense(self.Planet1, nickName)
             self.drawBaseBallSeams(self.spaceStation, nickName, j, fullCycle, 2)
-            self.DroneCircleX(self.Planet4, nickName, theta)
-            self.DroneCircleY(self.Planet4, nickName, theta)
-            self.DroneCircleZ(self.Planet4, nickName, theta)
 
-            theta += 0.15
+
+
+        self.DroneCircleX(self.Planet4, nickName, theta)
+        self.DroneCircleY(self.Planet4, nickName, theta)
+        self.DroneCircleZ(self.Planet4, nickName, theta)
         
 
         
@@ -98,22 +99,35 @@ class MyApp(ShowBase):
     # position of circles is small since planet it is attached to is small
     # drones are placed in a loop similar to warm up 1
     def DroneCircleX(self, centralObject, droneName, droneCircle):
+        for i in range(60):
+            spaceJamClasses.Drone.dronecount += 1
+            droneName = "Drone" + str(spaceJamClasses.Drone.dronecount)
             unitVec = defensePaths.CircleX(droneCircle)
             unitVec.normalize()
+            droneCircle = droneCircle + 1
             position = unitVec * 275 + centralObject.modelNode.getPos()
             spaceJamClasses.Drone(self.loader,"./Assets/DroneDefender/DroneDefender.obj", self.render, droneName, "./Assets/DroneDefender/octotoad1_auv.png", position, 4)
 
     def DroneCircleY(self, centralObject, droneName, droneCircle):
+        for i in range(60):
+            spaceJamClasses.Drone.dronecount += 1
+            droneName = "Drone" + str(spaceJamClasses.Drone.dronecount)
             unitVec = defensePaths.CircleY(droneCircle)
             unitVec.normalize()
+            droneCircle = droneCircle + 1
             position = unitVec * 275 + centralObject.modelNode.getPos()
             spaceJamClasses.Drone(self.loader,"./Assets/DroneDefender/DroneDefender.obj", self.render, droneName, "./Assets/DroneDefender/octotoad1_auv.png", position, 4)
         
     def DroneCircleZ(self, centralObject, droneName, droneCircle):
+        for i in range(60):
+            spaceJamClasses.Drone.dronecount += 1
+            droneName = "Drone" + str(spaceJamClasses.Drone.dronecount)
             unitVec = defensePaths.CircleZ(droneCircle)
             unitVec.normalize()
+            droneCircle = droneCircle + 1
             position = unitVec * 275 + centralObject.modelNode.getPos()
             spaceJamClasses.Drone(self.loader,"./Assets/DroneDefender/DroneDefender.obj", self.render, droneName, "./Assets/DroneDefender/octotoad1_auv.png", position, 4)
+    
     
     def setCamera(self):
         self.disableMouse()
